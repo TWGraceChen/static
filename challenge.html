@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>探索多元功能：翻牌大挑战</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
+            --role-color: #3b82f6;   /* 蓝色：职业角色 */
+            --skill-color: #ec4899;  /* 粉红：技能/工具 */
+            --trait-color: #10b981;  /* 绿色：特质/态度 */
+            --text-main: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            height: 100vh;
+            width: 100vw;
+            padding: 24px;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        header {
+            text-align: center;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        /* 控制按钮区 */
+        .controls-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 6px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .btn {
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-stage {
+            background: transparent;
+            color: #94a3b8;
+        }
+
+        .btn-stage:hover {
+            color: #f8fafc;
+        }
+
+        .btn-stage.active {
+            background: #6366f1;
+            color: white;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-action {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-answer {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-answer:hover {
+            background: linear-gradient(135deg, #34d399, #10b981);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* 主舞台区域 */
+        .main-stage {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 16px;
+            width: 90vw;
+            max-width: 1200px;
+            height: 68vh;
+            max-height: 650px;
+            margin: auto;
+        }
+
+        /* 左侧直向标签栏 */
+        .sidebar-legend {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            gap: 10px;
+            flex-shrink: 0;
+            width: 140px;
+        }
+
+        .legend-item {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+            white-space: nowrap;
+        }
+
+        .legend-role { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+        .legend-skill { background: linear-gradient(135deg, #db2777, #ec4899); }
+        .legend-trait { background: linear-gradient(135deg, #059669, #10b981); }
+
+        /* 卡片网格区域 */
+        .grid-wrapper {
+            flex-grow: 1;
+            height: 100%;
+            width: 100%;
+        }
+
+        .grid-container {
+            display: grid;
+            gap: 10px;
+            width: 100%;
+            height: 100%;
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        .grid-container.stage-1 { grid-template-columns: repeat(3, 1fr); }
+        .grid-container.stage-2 { grid-template-columns: repeat(5, 1fr); }
+        .grid-container.stage-3 { grid-template-columns: repeat(7, 1fr); }
+
+        /* 3D 卡片结构 */
+        .card-container {
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-container.always-open {
+            cursor: default;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 12px;
+        }
+
+        .card-container.flipped .card,
+        .card-container.always-open .card {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        /* 卡片背面 */
+        .card-back {
+            background: linear-gradient(145deg, #1e1b4b, #312e81);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .card-container:not(.always-open):hover .card-back {
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .badge-icon {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            z-index: 1;
+            backdrop-filter: blur(6px);
+        }
+
+        /* 卡片正面：Icon 在上，文字在下 */
+        .card-front {
+            background: #ffffff;
+            color: #0f172a;
+            transform: rotateY(180deg);
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 6px;
+            position: relative;
+        }
+
+        .card-front.type-role { border-color: var(--role-color); }
+        .card-front.type-skill { border-color: var(--skill-color); }
+        .card-front.type-trait { border-color: var(--trait-color); }
+
+        /* 左上角标签 */
+        .type-tag {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .type-role-bg { background-color: var(--role-color); }
+        .type-skill-bg { background-color: var(--skill-color); }
+        .type-trait-bg { background-color: var(--trait-color); }
+
+        /* 置中内容容器：垂直堆叠 (Icon 上、字下) */
+        .content-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            height: 100%;
+            margin-top: 6px;
+        }
+
+        .card-icon {
+            line-height: 1;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .card-container:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card-front.type-role .card-icon { color: var(--role-color); }
+        .card-front.type-skill .card-icon { color: var(--skill-color); }
+        .card-front.type-trait .card-icon { color: var(--trait-color); }
+
+        .card-value {
+            font-weight: 800;
+            color: #0f172a;
+            text-align: center;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        /* 动态尺寸调整 */
+        .stage-1 .card-icon { font-size: 2.8rem; }
+        .stage-1 .card-value { font-size: 1.5rem; }
+        .stage-1 .badge-icon { width: 48px; height: 48px; font-size: 1.5rem; }
+
+        .stage-2 .card-icon { font-size: 2.2rem; }
+        .stage-2 .card-value { font-size: 1.25rem; }
+        .stage-2 .badge-icon { width: 42px; height: 42px; font-size: 1.25rem; }
+
+        .stage-3 .card-icon { font-size: 1.7rem; }
+        .stage-3 .card-value { font-size: 1.05rem; }
+        .stage-3 .badge-icon { width: 36px; height: 36px; font-size: 1.1rem; }
+
+        @media (max-width: 768px) {
+            .main-stage {
+                flex-direction: column;
+                height: auto;
+            }
+            .sidebar-legend {
+                flex-direction: row;
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="controls-container">
+            <div class="btn-group">
+                <button class="btn btn-stage active" id="btn-stage1" onclick="switchStage(1)">
+                    <i class="fa-solid fa-seedling"></i> 第一关 (3职业)
+                </button>
+                <button class="btn btn-stage" id="btn-stage2" onclick="switchStage(2)">
+                    <i class="fa-solid fa-fire"></i> 第二关 (5职业)
+                </button>
+                <button class="btn btn-stage" id="btn-stage3" onclick="switchStage(3)">
+                    <i class="fa-solid fa-rocket"></i> 第三关 (7现代新兴职业)
+                </button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-action" onclick="setAllCards(true)">
+                    <i class="fa-solid fa-book-open"></i> 全部打开
+                </button>
+                <button class="btn btn-action" onclick="setAllCards(false)">
+                    <i class="fa-solid fa-lock"></i> 全部盖上
+                </button>
+                <button class="btn btn-answer" onclick="showAnswer()">
+                    <i class="fa-solid fa-circle-check"></i> 公布答案
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-stage">
+        <div class="sidebar-legend">
+            <div class="legend-item legend-role"><i class="fa-solid fa-user-tie"></i> 职业角色</div>
+            <div class="legend-item legend-skill"><i class="fa-solid fa-wrench"></i> 技能/工具</div>
+            <div class="legend-item legend-trait"><i class="fa-solid fa-star"></i> 特质/态度</div>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="grid-container stage-1" id="grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const stage1Data = [
+            { "role": { val: "老师", icon: "fa-chalkboard-user" }, "skill": { val: "黑板与简报", icon: "fa-display" }, "trait": { val: "耐心", icon: "fa-heart" } },
+            { "role": { val: "医师", icon: "fa-user-doctor" }, "skill": { val: "听诊器", icon: "fa-stethoscope" }, "trait": { val: "冷静", icon: "fa-brain" } },
+            { "role": { val: "警察", icon: "fa-user-shield" }, "skill": { val: "对讲机", icon: "fa-walkie-talkie" }, "trait": { val: "正义感", icon: "fa-scale-balanced" } }
+        ];
+
+        const stage2Data = [
+            { "role": { val: "厨师", icon: "fa-kitchen-set" }, "skill": { val: "烹饪器具", icon: "fa-utensils" }, "trait": { val: "专注", icon: "fa-bullseye" } },
+            { "role": { val: "工程师", icon: "fa-laptop-code" }, "skill": { val: "写代码", icon: "fa-code" }, "trait": { val: "逻辑思考", icon: "fa-puzzle-piece" } },
+            { "role": { val: "设计师", icon: "fa-palette" }, "skill": { val: "绘图板", icon: "fa-pen-nib" }, "trait": { val: "视觉创意", icon: "fa-wand-magic-sparkles" } },
+            { "role": { val: "记者", icon: "fa-newspaper" }, "skill": { val: "采访", icon: "fa-microphone" }, "trait": { val: "观察敏锐", icon: "fa-magnifying-glass" } },
+            { "role": { val: "消防员", icon: "fa-fire-extinguisher" }, "skill": { val: "高压水枪", icon: "fa-hose" }, "trait": { val: "勇气", icon: "fa-shield-halved" } }
+        ];
+
+        const stage3Data = [
+            { "role": { val: "AI 咏唱师", icon: "fa-wand-magic-sparkles" }, "skill": { val: "提示词工程", icon: "fa-terminal" }, "trait": { val: "抽象思维", icon: "fa-lightbulb" } },
+            { "role": { val: "数据分析师", icon: "fa-chart-pie" }, "skill": { val: "数据建模", icon: "fa-database" }, "trait": { val: "严谨细心", icon: "fa-magnifying-glass-chart" } },
+            { "role": { val: "可持续管理师", icon: "fa-leaf" }, "skill": { val: "碳盘查认证", icon: "fa-file-contract" }, "trait": { val: "长远前瞻", icon: "fa-earth-americas" } },
+            { "role": { val: "UI/UX 设计师", icon: "fa-pen-ruler" }, "skill": { val: "原型图绘制", icon: "fa-layer-group" }, "trait": { val: "换位思考", icon: "fa-hands-holding-heart" } },
+            { "role": { val: "音视频创作者", icon: "fa-video" }, "skill": { val: "剪辑与策划", icon: "fa-film" }, "trait": { val: "个人魅力", icon: "fa-star" } },
+            { "role": { val: "云架构师", icon: "fa-cloud" }, "skill": { val: "部署运维", icon: "fa-server" }, "trait": { val: "大局观念", icon: "fa-sitemap" } },
+            { "role": { val: "品牌公关", icon: "fa-bullhorn" }, "skill": { val: "危机处理", icon: "fa-shield-cat" }, "trait": { val: "应变敏捷", icon: "fa-bolt" } }
+        ];
+
+        let currentStage = 1;
+
+        function renderGrid(stage, isAnswerMode = false) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = ''; 
+
+            let rawData = stage === 1 ? stage1Data : (stage === 2 ? stage2Data : stage3Data);
+            
+            const roles = [], skills = [], traits = [];
+
+            rawData.forEach(item => {
+                if (item.role) roles.push({ type: 'role', typeName: '职业', icon: item.role.icon, val: item.role.val, isAlwaysOpen: true });
+                if (item.skill) skills.push({ type: 'skill', typeName: '技能', icon: item.skill.icon, val: item.skill.val, isAlwaysOpen: false });
+                if (item.trait) traits.push({ type: 'trait', typeName: '特质', icon: item.trait.icon, val: item.trait.val, isAlwaysOpen: false });
+            });
+
+            // 如果不是答案模式，则随机打乱第二排与第三排的顺序
+            if (!isAnswerMode) {
+                skills.sort(() => Math.random() - 0.5);
+                traits.sort(() => Math.random() - 0.5);
+            }
+
+            const cardsList = [...roles, ...skills, ...traits];
+            grid.className = `grid-container stage-${stage}`;
+
+            let skillNumber = 1;
+            const traitLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+            let traitIndex = 0;
+
+            cardsList.forEach((item) => {
+                const container = document.createElement('div');
+                let badgeHtml = '';
+
+                if (item.isAlwaysOpen) {
+                    container.className = 'card-container always-open';
+                } else {
+                    container.className = isAnswerMode ? 'card-container flipped' : 'card-container';
+                    container.onclick = function() { this.classList.toggle('flipped'); };
+                    if (item.type === 'skill') badgeHtml = `<div class="badge-icon">${skillNumber++}</div>`;
+                    else if (item.type === 'trait') badgeHtml = `<div class="badge-icon">${traitLetters[traitIndex++]}</div>`;
+                }
+
+                container.innerHTML = `
+                    <div class="card">
+                        <div class="card-face card-back">${badgeHtml}</div>
+                        <div class="card-face card-front type-${item.type}">
+                            <span class="type-tag type-${item.type}-bg">${item.typeName}</span>
+                            <div class="content-box">
+                                <i class="fa-solid ${item.icon} card-icon"></i>
+                                <div class="card-value">${item.val}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(container);
+            });
+        }
+
+        function switchStage(stage) {
+            currentStage = stage;
+            document.getElementById('btn-stage1').classList.toggle('active', stage === 1);
+            document.getElementById('btn-stage2').classList.toggle('active', stage === 2);
+            document.getElementById('btn-stage3').classList.toggle('active', stage === 3);
+            renderGrid(stage, false);
+        }
+
+        function setAllCards(open) {
+            const cards = document.querySelectorAll('.card-container:not(.always-open)');
+            cards.forEach(card => card.classList.toggle('flipped', open));
+        }
+
+        function showAnswer() {
+            renderGrid(currentStage, true);
+        }
+
+        renderGrid(1);
+    </script>
+</body>
+</html>
