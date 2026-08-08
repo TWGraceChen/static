@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>第44屆亞太兒少跨代領袖特會｜報名相關聲明草稿</title>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #e5e7eb;
+      --primary: #3157a4;
+      --primary-soft: #eef3ff;
+      --accent: #d89a3d;
+      --shadow: 0 14px 36px rgba(30, 41, 59, 0.08);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        "Noto Sans TC",
+        "PingFang TC",
+        "Microsoft JhengHei",
+        sans-serif;
+      background:
+        radial-gradient(circle at top left, #eef3ff 0, transparent 35%),
+        radial-gradient(circle at top right, #fff6e8 0, transparent 30%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .page-shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(49, 87, 164, 0.08);
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .notice {
+      margin: 0 auto 28px;
+      max-width: 900px;
+      padding: 16px 18px;
+      border: 1px solid #f0d7a8;
+      border-radius: 14px;
+      background: #fffaf0;
+      color: #77521b;
+      font-size: 14px;
+    }
+
+    .roles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .role-card {
+      appearance: none;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .role-card:hover {
+      transform: translateY(-4px);
+      border-color: #cbd8f4;
+      box-shadow: 0 18px 44px rgba(30, 41, 59, 0.12);
+    }
+
+    .role-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: var(--primary-soft);
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+
+    .role-card h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .role-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .role-card .count {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .document-page {
+      display: none;
+    }
+
+    .doc-topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      cursor: pointer;
+      font-weight: 700;
+      padding: 8px 0;
+    }
+
+    .doc-summary {
+      background: linear-gradient(135deg, #ffffff 0%, #f6f8ff 100%);
+      border: 1px solid #dfe7f6;
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+
+    .doc-summary h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .doc-summary p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .doc-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    details.document {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(30, 41, 59, 0.05);
+    }
+
+    details.document[open] {
+      border-color: #ccd8ee;
+    }
+
+    details.document summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    details.document summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .doc-badge {
+      flex: none;
+      font-size: 12px;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: 999px;
+      padding: 5px 9px;
+    }
+
+    .doc-content {
+      border-top: 1px solid var(--line);
+      padding: 28px 28px 34px;
+    }
+
+    .doc-content h3 {
+      margin: 30px 0 8px;
+      font-size: 19px;
+      color: #243b6b;
+    }
+
+    .doc-content h3:first-child {
+      margin-top: 0;
+    }
+
+    .doc-content p {
+      margin: 8px 0 14px;
+    }
+
+    .doc-content ol,
+    .doc-content ul {
+      margin: 8px 0 16px;
+      padding-left: 1.5rem;
+    }
+
+    .doc-content li {
+      margin-bottom: 6px;
+    }
+
+    .doc-content strong {
+      color: #172554;
+    }
+
+    .soft-box {
+      margin: 16px 0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: var(--surface-soft);
+      border: 1px solid #e8edf5;
+    }
+
+    .footer {
+      margin-top: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .roles {
+        grid-template-columns: 1fr;
+      }
+
+      .page-shell {
+        width: min(100% - 24px, 1120px);
+        padding-top: 24px;
+      }
+
+      .doc-content {
+        padding: 22px 18px 28px;
+      }
+
+      details.document summary {
+        padding: 18px;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page-shell">
+
+    <section id="rolePage">
+      <header class="hero">
+        <div class="eyebrow">聲明文件草稿展示</div>
+        <h1>第44屆亞太兒少跨代領袖特會</h1>
+        <p>
+          請選擇身份，查看該身份於正式報名流程中需要閱讀及同意的相關聲明。
+        </p>
+      </header>
+
+      <div class="notice">
+        本頁僅作為聲明內容與報名流程規劃之展示草稿，並非正式報名、簽署或法律文件送出頁面。
+      </div>
+
+      <section class="roles">
+        <button class="role-card" onclick="openRole('adult')">
+          <div class="role-icon">👤</div>
+          <h2>成年報名者</h2>
+          <p>由成年參加者本人閱讀相關內容。</p>
+          <span class="count">需閱讀 2 份文件</span>
+        </button>
+
+        <button class="role-card" onclick="openRole('guardian')">
+          <div class="role-icon">👨‍👩‍👧</div>
+          <h2>未成年報名者</h2>
+          <p>由未成年參加者之法定代理人或監護人閱讀。</p>
+          <span class="count">需閱讀 3 份文件</span>
+        </button>
+
+        <button class="role-card" onclick="openRole('leader')">
+          <div class="role-icon">🧭</div>
+          <h2>團隊領隊</h2>
+          <p>領隊同時為成年參加者，並負有團隊行政角色。</p>
+          <span class="count">需閱讀 3 份文件</span>
+        </button>
+      </section>
+    </section>
+
+    <section id="documentPage" class="document-page">
+      <div class="doc-topbar">
+        <button class="back-btn" onclick="goBack()">← 返回身份選擇</button>
+      </div>
+
+      <div class="doc-summary">
+        <h2 id="roleTitle"></h2>
+        <p id="roleDescription"></p>
+      </div>
+
+      <div id="documentList" class="doc-list"></div>
+
+      <div class="footer">
+        第44屆亞太兒少跨代領袖特會｜聲明文件草稿展示
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const docs = {
+      adultNotice: {
+        title: "報名須知（成年版）",
+        tag: "成年參加者本人",
+        html: `
+          <h3>一、報名方式</h3>
+          <p>
+            本特會採網路系統報名。為保障每位參加者之權益及確保報名資料與同意程序有效，
+            成年參加者須由本人完成報名資料填寫，並閱讀、確認及同意相關聲明。
+          </p>
+          <p>
+            領隊僅作為團隊行政聯繫窗口，協助團隊報名管理，不得代替參加者完成報名或同意程序。
+          </p>
+          <p>
+            若領隊或其他人員未經本人同意，代為填寫、提交或修改報名資料，
+            造成資料錯誤、權益受損或其他相關問題，相關責任由資料提供者及代為處理者自行承擔。
+          </p>
+          <p>
+            大會如發現報名資料或同意程序不符合規定，得要求補正；
+            若無法完成確認，大會得取消該報名資格。
+          </p>
+
+          <h3>二、報名資料正確性</h3>
+          <p>
+            本人確認所提供之姓名、身分資料、聯絡方式、出生年月日、教會／機構資料及其他報名資訊皆為真實、正確且完整。
+          </p>
+          <p>若因本人提供錯誤、不完整或不實資料，導致下列情形，相關責任由本人自行承擔：</p>
+          <ol>
+            <li>報名資格受影響。</li>
+            <li>活動通知無法正常送達。</li>
+            <li>保險權益受影響。</li>
+            <li>住宿或其他活動安排發生錯誤。</li>
+          </ol>
+
+          <h3>三、報名費用與繳費方式</h3>
+          <p>
+            本人了解本特會採團隊方式進行報名及繳費。
+          </p>
+          <p>
+            完成個人報名後，報名費用由所屬團隊領隊統一彙整，並代表團隊向大會完成繳費。
+          </p>
+          <p>
+            本人同意依大會公告之費用標準，向所屬領隊完成費用繳交。
+          </p>
+
+          <h3>四、報名費用方案與優惠資格</h3>
+          <p>
+            報名費用依本特會公告之方案辦理，優惠方案之資格及適用期限，以大會公告內容為準。
+          </p>
+          <p>
+            若後續發生參加者更換情形，原報名者之優惠資格不予保留，
+            並依更換當時適用之方案重新計算費用。
+          </p>
+
+          <h3>五、退費與參加者異動</h3>
+          <ol>
+            <li>
+              報名完成並繳費後，因活動籌備涉及場地、教材、餐飲、住宿、保險及行政作業等相關安排，
+              <strong>恕不接受退費申請。</strong>
+            </li>
+            <li>
+              如因個人因素無法參加，可申請更換參加者（名額轉讓）。
+            </li>
+            <li>
+              更換參加者須於<strong>特會開始前14天以前</strong>提出申請，
+              並由新參加者重新完成報名資料填寫及相關同意程序；逾期恕不受理。
+            </li>
+            <li>
+              更換參加者時，原報名者之優惠資格不予保留。
+              新參加者之報名費用依更換當時適用方案重新計算。
+            </li>
+            <li>
+              若新參加者不符合原優惠資格，或更換時優惠期限已截止，
+              須補足報名費用差額。
+            </li>
+          </ol>
+
+          <h3>六、保險事項</h3>
+          <p>大會將依活動規劃為參加者投保相關活動保險。</p>
+          <ol>
+            <li>保險所需資料以本人於報名系統提供之資料為準。</li>
+            <li>本人應確認姓名、身分資料、出生年月日及其他必要資訊正確無誤。</li>
+            <li>
+              若因本人所提供資料錯誤、不完整或未於期限內修正，
+              導致保險無法生效、影響理賠權益或產生其他損失，
+              大會及領隊不負因該資料錯誤所生之責任。
+            </li>
+            <li>保險保障內容、理賠範圍及認定標準，依保險公司相關規定辦理。</li>
+          </ol>
+
+          <h3>七、住宿安排</h3>
+          <p>若本人選擇住宿方案：</p>
+          <ol>
+            <li>住宿安排由大會依報名資料及整體規劃辦理。</li>
+            <li>領隊得協助彙整團隊住宿需求及進行團隊內房間分配。</li>
+            <li>最終住宿安排仍依大會及住宿單位實際安排為準。</li>
+          </ol>
+
+          <h3>八、活動期間規範</h3>
+          <ol>
+            <li>尊重大會工作人員、領隊及其他參加者。</li>
+            <li>遵守活動流程及住宿場所相關規範。</li>
+            <li>不從事危害自身或他人安全之行為。</li>
+            <li>不攜帶或使用違禁物品、危險物品。</li>
+            <li>未經同意不得私自離開活動安排範圍。</li>
+          </ol>
+          <p>
+            若有重大違規情形，大會得取消本人參與資格，相關費用不予退還。
+          </p>
+
+          <h3>九、健康與安全事項</h3>
+          <p>
+            本人應依自身健康狀況評估是否適合參與本特會。
+          </p>
+          <p>
+            若本人有可能影響活動安全、住宿安排或需要特別協助之情況，
+            應主動於活動前向所屬領隊或大會說明，以利相關協助。
+          </p>
+
+          <h3>十、活動調整與不可抗力</h3>
+          <p>
+            如遇天災、疫情、政府政策、場地因素或其他不可抗力因素，
+            大會保留調整活動時間、方式、內容或取消活動之權利，
+            相關處理方式依大會公告辦理。
+          </p>
+        `
+      },
+
+      minorNotice: {
+        title: "報名須知（未成年版）",
+        tag: "監護人同意",
+        html: `
+          <p>
+            本人為未成年參加者之法定代理人或監護人，
+            已詳閱以下事項，並同意本人所監護之未成年參加者參加第44屆亞太兒少跨代領袖特會。
+          </p>
+
+          <h3>一、參與同意</h3>
+          <p>
+            本人同意未成年參加者參與本特會，並了解活動內容包含課程、團體活動、住宿及其他相關安排。
+          </p>
+          <p>
+            本人確認未成年參加者適合參與本活動，並願意配合大會及所屬團隊之相關安排。
+          </p>
+
+          <h3>二、報名方式與資料確認</h3>
+          <ol>
+            <li>未成年參加者之相關報名事項，應由法定代理人或監護人確認。</li>
+            <li>報名資料須經本人確認後提交。</li>
+            <li>領隊不得代替監護人完成相關同意程序。</li>
+          </ol>
+          <p>
+            若因未經本人同意而由他人代為填寫、提交或修改資料，
+            造成資料錯誤、權益受損或其他問題，相關責任由資料提供者及代為處理者自行承擔。
+          </p>
+
+          <h3>三、監護責任</h3>
+          <ol>
+            <li>未成年參加者之法定監護責任仍由本人承擔。</li>
+            <li>大會及領隊將依活動安排提供必要協助與管理，但不取代監護人之法律責任。</li>
+            <li>本人應確認未成年參加者能遵守活動規範並適合參與團體活動。</li>
+          </ol>
+
+          <h3>四、報名費用與繳費方式</h3>
+          <p>
+            本人了解未成年參加者之報名費用，將由所屬團隊領隊統一彙整，
+            並代表團隊向大會完成繳費。
+          </p>
+          <p>
+            本人同意依大會公告之費用標準，配合所屬領隊完成費用繳交。
+          </p>
+
+          <h3>五、退費與參加者異動</h3>
+          <ol>
+            <li>報名完成並繳費後，恕不接受退費申請。</li>
+            <li>如因個人因素無法參加，可申請更換參加者。</li>
+            <li>
+              更換參加者須於<strong>特會開始前14天以前</strong>提出申請，
+              並由新參加者重新完成報名資料及相關同意程序；逾期恕不受理。
+            </li>
+            <li>
+              更換參加者時，原報名者之優惠資格不予保留，
+              並依更換當時適用方案重新計算費用。
+            </li>
+            <li>
+              若新參加者不符合原優惠資格，或優惠期限已截止，
+              須補足報名費用差額。
+            </li>
+          </ol>
+
+          <h3>六、保險事項</h3>
+          <p>
+            大會將依活動規劃為參加者投保相關活動保險。
+          </p>
+          <p>
+            本人應確認所提供之姓名、身分資料、出生年月日及其他必要資料正確無誤。
+          </p>
+          <p>
+            若因資料錯誤、不完整或未及時修正，
+            導致保險無法生效或影響理賠權益，
+            大會及領隊不負因該資料錯誤所生之責任。
+          </p>
+
+          <h3>七、領隊授權</h3>
+          <p>本人同意所屬團隊領隊協助：</p>
+          <ol>
+            <li>接收及傳達大會通知。</li>
+            <li>協助確認報名狀態。</li>
+            <li>協助團隊費用彙整及向大會繳交。</li>
+            <li>協助住宿需求及房間安排。</li>
+            <li>協助活動期間之團隊聯繫。</li>
+          </ol>
+          <p>
+            上述授權僅限本次特會相關行政及團隊協助事項，
+            不代表未成年參加者之監護責任移轉予領隊。
+          </p>
+
+          <h3>八、緊急狀況處理</h3>
+          <p>
+            若未成年參加者於活動期間發生突發狀況，
+            本人同意大會及領隊得於必要範圍內協助處理，
+            包括聯繫本人、協助就醫或採取其他必要安全措施。
+          </p>
+          <p>
+            因就醫或其他緊急處置所生之醫療、交通或相關費用，由本人負擔。
+          </p>
+
+          <h3>九、活動規範</h3>
+          <p>
+            本人同意未成年參加者遵守大會活動、團體生活及住宿相關規範。
+          </p>
+          <p>
+            若有重大違規情形，大會得取消其參與資格，相關費用不予退還。
+          </p>
+        `
+      },
+
+      privacy: {
+        title: "個人資料蒐集、處理及利用告知聲明",
+        tag: "所有報名者",
+        html: `
+          <p>
+            為保障您的權益及協助您了解本協會蒐集、處理及利用個人資料之方式，
+            社團法人中華基督教亞太兒童少年領袖培訓發展協會
+            （以下稱「本協會」）依《個人資料保護法》相關規定告知如下。
+          </p>
+
+          <h3>一、蒐集個人資料之機構</h3>
+          <p>
+            社團法人中華基督教亞太兒童少年領袖培訓發展協會。
+          </p>
+
+          <h3>二、個人資料蒐集之目的</h3>
+          <ol>
+            <li>第44屆亞太兒少跨代領袖特會報名、資格確認及行政作業。</li>
+            <li>活動通知、聯繫及相關服務提供。</li>
+            <li>團隊管理及相關行政聯繫。</li>
+            <li>住宿安排及住宿相關行政作業。</li>
+            <li>活動保險投保及相關作業。</li>
+            <li>報名費用及繳費紀錄管理。</li>
+            <li>其他與本次活動執行直接相關之必要事項。</li>
+          </ol>
+
+          <h3>三、蒐集之個人資料類別</h3>
+          <p>依本活動報名及行政需求，可能蒐集以下資料：</p>
+
+          <div class="soft-box">
+            <strong>辨識個人資料</strong><br>
+            姓名、身分證字號或其他身分識別資料、電話、Email。
+          </div>
+
+          <div class="soft-box">
+            <strong>個人基本資料</strong><br>
+            性別、出生年月日、年級、教會／機構名稱、職分。
+          </div>
+
+          <div class="soft-box">
+            <strong>活動相關資料</strong><br>
+            報名身份、所屬團隊、報名方案、住宿需求、繳費紀錄及保險作業所需資料。
+          </div>
+
+          <h3>四、個人資料之來源</h3>
+          <ol>
+            <li>成年參加者本人於報名系統提供。</li>
+            <li>未成年參加者之資料由法定代理人或監護人確認並提供。</li>
+            <li>經參加者授權，由領隊協助提供之團隊行政相關資料。</li>
+          </ol>
+
+          <h3>五、個人資料利用之期間、地區、對象及方式</h3>
+
+          <p><strong>（一）期間：</strong></p>
+          <p>
+            於執行本特會相關業務所必要之期間，以及依法令規定應保存之期間內。
+          </p>
+
+          <p><strong>（二）地區：</strong></p>
+          <p>
+            於本協會及相關活動合作單位執行業務所必要之地區。
+          </p>
+
+          <p><strong>（三）利用對象：</strong></p>
+          <ol>
+            <li>本協會及本次活動相關工作人員。</li>
+            <li>活動執行所必要之合作單位。</li>
+            <li>住宿相關單位。</li>
+            <li>保險相關單位。</li>
+            <li>依法有權要求提供資料之機關或單位。</li>
+          </ol>
+
+          <p><strong>（四）利用方式：</strong></p>
+          <p>
+            以電子文件、紙本、資訊系統或其他符合個人資料保護相關規定之適當方式處理及利用。
+          </p>
+
+          <h3>六、當事人得行使之權利</h3>
+          <p>依《個人資料保護法》規定，您得依法行使下列權利：</p>
+          <ol>
+            <li>查詢或請求閱覽。</li>
+            <li>請求製給複製本。</li>
+            <li>請求補充或更正。</li>
+            <li>請求停止蒐集、處理或利用。</li>
+            <li>請求刪除。</li>
+          </ol>
+
+          <h3>七、不提供個人資料之影響</h3>
+          <p>
+            您得自由選擇是否提供個人資料；
+            惟若未提供本次活動所需之必要資料，
+            可能導致無法完成報名、保險、住宿、身份確認或其他相關活動安排。
+          </p>
+
+          <h3>八、未成年參加者</h3>
+          <p>
+            未成年參加者之個人資料，應由其法定代理人或監護人閱讀本聲明並完成相關同意程序。
+          </p>
+        `
+      },
+
+      leaderNotice: {
+        title: "領隊須知",
+        tag: "團隊領隊",
+        html: `
+          <p>
+            本人同意擔任所屬團隊參加第44屆亞太兒少跨代領袖特會之領隊，
+            並了解領隊角色為本團隊與大會之主要行政聯繫窗口，
+            協助團隊報名管理、費用繳交、住宿安排及活動期間之團隊協調。
+          </p>
+
+          <h3>一、領隊角色與職責</h3>
+          <p>本人同意協助：</p>
+          <ol>
+            <li>接收並傳達大會公告及活動資訊。</li>
+            <li>提醒團隊成員依期限完成個人報名。</li>
+            <li>確認團隊成員之報名及繳費狀態。</li>
+            <li>協助團隊費用彙整並向大會完成繳費。</li>
+            <li>協助住宿需求整理及團隊房間分配。</li>
+            <li>於活動期間協助團隊聯繫、秩序及必要行政事項。</li>
+          </ol>
+
+          <h3>二、不得代替參加者完成報名與同意</h3>
+          <p>
+            本人了解，每位成年參加者應自行完成報名及相關同意程序；
+            未成年參加者之相關同意程序應由其法定代理人或監護人完成。
+          </p>
+          <p>
+            領隊不得代替參加者本人或未成年參加者之法定代理人，
+            完成具有本人意思表示性質之報名確認或聲明同意。
+          </p>
+          <p>
+            若領隊未經本人或法定代理人同意而代為填寫、提交、修改資料或完成相關同意，
+            造成資料錯誤、權益受損或其他相關問題，
+            相關責任由實際代為處理者及資料提供者承擔。
+          </p>
+
+          <h3>三、費用彙整與繳交</h3>
+          <p>
+            本人了解，本特會採團隊統一繳費方式。
+          </p>
+          <p>
+            領隊應依大會公告之期限，協助確認團隊報名狀態及應繳金額，
+            彙整團隊參加者費用後，代表團隊向大會完成繳費。
+          </p>
+          <p>本人應協助確認：</p>
+          <ol>
+            <li>團隊內已完成報名之參加者。</li>
+            <li>各參加者適用之報名費用方案。</li>
+            <li>團隊應繳費用總額。</li>
+            <li>大會公告之繳費期限及相關程序。</li>
+          </ol>
+
+          <h3>四、住宿安排</h3>
+          <p>若團隊成員登記住宿，本人同意協助：</p>
+          <ol>
+            <li>確認團隊住宿需求。</li>
+            <li>依大會可提供之房型及住宿安排進行團隊房間分配。</li>
+            <li>將住宿相關資訊傳達予團隊成員。</li>
+          </ol>
+          <p>
+            最終住宿安排仍依大會及住宿單位實際規劃為準。
+          </p>
+
+          <h3>五、活動期間之團隊協助</h3>
+          <p>活動期間，本人同意於合理範圍內協助：</p>
+          <ol>
+            <li>提醒團隊成員遵守活動流程及相關規範。</li>
+            <li>協助大會與團隊成員間之資訊傳達。</li>
+            <li>遇有突發事件時協助聯絡參加者本人、監護人或大會工作人員。</li>
+          </ol>
+
+          <h3>六、未成年參加者之責任界線</h3>
+          <p>
+            本人了解，領隊於團隊及活動期間提供必要之協助與管理，
+            但不因此取代未成年參加者之法定代理人或監護人之法律地位及監護責任。
+          </p>
+
+          <h3>七、參加者資料</h3>
+          <p>
+            本人如因團隊行政管理而接觸團隊成員資料，
+            應僅於本次特會必要範圍內使用，不得作其他與本次活動無關之用途。
+          </p>
+        `
+      },
+
+      leaderAuthorization: {
+        title: "領隊委任聲明",
+        tag: "非領隊報名者",
+        html: `
+          <p>
+            本人同意委任所屬團隊領隊，
+            協助處理本人參加第44屆亞太兒少跨代領袖特會之相關團隊行政事項。
+          </p>
+          <p>
+            若參加者為未成年人，本聲明由其法定代理人或監護人閱讀並同意。
+          </p>
+
+          <h3>一、委任事項</h3>
+          <p>本人同意領隊於本次特會必要範圍內協助：</p>
+          <ol>
+            <li>接收及傳達大會公告與活動資訊。</li>
+            <li>協助確認本人或未成年參加者之報名完成狀態。</li>
+            <li>彙整團隊參加費用，並代表團隊向大會完成繳費。</li>
+            <li>協助住宿需求整理及團隊房間分配。</li>
+            <li>協助活動期間之團隊聯繫及必要行政事項。</li>
+          </ol>
+
+          <h3>二、報名與同意程序</h3>
+          <p>
+            本人了解，領隊之委任範圍不包含代替本人作成報名相關意思表示。
+          </p>
+          <p>
+            成年參加者仍應由本人完成報名資料確認及相關聲明同意；
+            未成年參加者則由其法定代理人或監護人完成相關確認及同意程序。
+          </p>
+
+          <h3>三、費用相關委任</h3>
+          <p>
+            本人同意依大會公告之費用標準，將應繳之報名及相關費用交由所屬領隊彙整，
+            再由領隊代表團隊向大會完成繳費。
+          </p>
+          <p>
+            若因更換參加者而產生報名費用差額，
+            本人同意依大會規定補足相關差額後，再由領隊協助彙整繳交。
+          </p>
+
+          <h3>四、住宿相關委任</h3>
+          <p>若本人或未成年參加者登記住宿，本人同意領隊協助：</p>
+          <ol>
+            <li>確認團隊住宿需求。</li>
+            <li>進行團隊房間分配。</li>
+            <li>接收及傳達住宿相關資訊。</li>
+          </ol>
+          <p>
+            本人了解，實際住宿房型與房間安排仍須依大會及住宿單位整體規劃調整。
+          </p>
+
+          <h3>五、資料及責任</h3>
+          <p>
+            本人仍應對所提供之個人資料正確性負責。
+            若因本人或法定代理人提供錯誤、不完整資料，
+            導致報名、保險、住宿或其他權益受到影響，
+            應由資料提供者承擔相關責任。
+          </p>
+
+          <h3>六、委任範圍</h3>
+          <p>
+            本委任僅限於第44屆亞太兒少跨代領袖特會之團隊行政、
+            費用彙整、住宿安排及活動聯繫等相關事項。
+          </p>
+          <p>
+            本委任不代表參加者本人之責任移轉予領隊；
+            未成年參加者之法定監護責任亦不因本委任而移轉予領隊。
+          </p>
+        `
+      }
+    };
+
+    const roles = {
+      adult: {
+        title: "成年報名者",
+        description: "成年參加者本人需要閱讀以下 2 份文件。",
+        docs: ["adultNotice", "privacy"]
+      },
+
+      guardian: {
+        title: "未成年報名者",
+        description: "以下內容由未成年參加者之法定代理人或監護人閱讀，共 3 份文件。",
+        docs: ["minorNotice", "privacy", "leaderAuthorization"]
+      },
+
+      leader: {
+        title: "團隊領隊",
+        description: "領隊本身同時為成年參加者，因此除了成年版報名須知外，另需閱讀領隊相關規範，共 3 份文件。",
+        docs: ["adultNotice", "privacy", "leaderNotice"]
+      }
+    };
+
+    function openRole(roleKey) {
+      const role = roles[roleKey];
+
+      document.getElementById("rolePage").style.display = "none";
+      document.getElementById("documentPage").style.display = "block";
+
+      document.getElementById("roleTitle").textContent = role.title;
+      document.getElementById("roleDescription").textContent = role.description;
+
+      const list = document.getElementById("documentList");
+      list.innerHTML = "";
+
+      role.docs.forEach((docKey, index) => {
+        const doc = docs[docKey];
+
+        const details = document.createElement("details");
+        details.className = "document";
+
+        if (index === 0) {
+          details.open = true;
+        }
+
+        details.innerHTML = `
+          <summary>
+            <span>${doc.title}</span>
+            <span class="doc-badge">${doc.tag}</span>
+          </summary>
+          <div class="doc-content">
+            ${doc.html}
+          </div>
+        `;
+
+        list.appendChild(details);
+      });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function goBack() {
+      document.getElementById("documentPage").style.display = "none";
+      document.getElementById("rolePage").style.display = "block";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  </script>
+</body>
+</html>
