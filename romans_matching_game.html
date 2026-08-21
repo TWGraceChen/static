@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>羅馬書｜生命形成連連看</title>
+  <style>
+    :root {
+      --bg: #f5f1e8; --paper: #fffdf8; --ink: #2f2a25; --muted: #72685e;
+      --red: #a63d40; --red-dark: #7f292c; --red-soft: #f7e4e3;
+      --green: #4f7f63; --green-dark: #355c47; --green-soft: #e2efe7;
+      --gold: #c79b4c; --border: #ded4c8;
+      --shadow: 0 8px 22px rgba(61,50,39,.11);
+    }
+    * { box-sizing: border-box; }
+    html, body { width:100%; height:100%; margin:0; overflow:hidden; }
+    body {
+      font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+      color:var(--ink);
+      background:radial-gradient(circle at top left,rgba(199,155,76,.10),transparent 28%),linear-gradient(180deg,#f7f3eb 0%,#eee8de 100%);
+    }
+    button { font:inherit; }
+    .app {
+      width:100%; height:100vh; padding:12px 14px;
+      display:grid; grid-template-rows:auto auto minmax(0,1fr); gap:8px;
+    }
+    .hero {
+      min-height:64px; background:rgba(255,253,248,.94); border:1px solid var(--border);
+      border-radius:18px; padding:10px 16px; box-shadow:var(--shadow);
+      display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center;
+    }
+    .eyebrow { font-size:.66rem; letter-spacing:.12em; color:var(--gold); font-weight:900; margin-bottom:2px; }
+    h1 { margin:0; font-size:clamp(1.2rem,2vw,1.85rem); line-height:1.08; }
+    .hero p { display:none; }
+    .scorebox { min-width:112px; text-align:center; border-left:1px solid var(--border); padding-left:15px; }
+    .score-number { font-size:1.65rem; font-weight:950; color:var(--green-dark); line-height:1; }
+    .score-label { color:var(--muted); margin-top:3px; font-size:.72rem; }
+
+    .toolbar { min-height:36px; display:flex; gap:10px; align-items:center; justify-content:space-between; }
+    .instructions { color:var(--muted); font-size:.78rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+    .actions { display:flex; gap:7px; flex:0 0 auto; }
+    .btn { border:1px solid var(--border); background:var(--paper); color:var(--ink); border-radius:999px; padding:7px 12px; cursor:pointer; font-weight:800; font-size:.78rem; box-shadow:0 3px 10px rgba(50,40,30,.05); }
+    .btn.primary { background:var(--green-dark); border-color:var(--green-dark); color:#fff; }
+    .btn.danger { color:var(--red-dark); }
+
+    .game-board { min-height:0; display:grid; grid-template-columns:minmax(250px,.72fr) minmax(0,2.55fr); gap:10px; }
+    .panel { min-height:0; background:rgba(255,253,248,.84); border:1px solid var(--border); border-radius:18px; padding:10px; box-shadow:var(--shadow); display:grid; grid-template-rows:auto minmax(0,1fr); }
+    .panel-title { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:7px; }
+    .panel-title h2 { margin:0; font-size:.9rem; }
+    .panel-title span { color:var(--muted); font-size:.68rem; white-space:nowrap; }
+
+    .domain-grid { min-height:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:repeat(2,minmax(0,1fr)); gap:8px; }
+    .action-grid { min-height:0; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); grid-template-rows:repeat(4,minmax(0,1fr)); gap:8px; }
+    .card { position:relative; min-width:0; min-height:0; border:0; border-radius:14px; cursor:pointer; padding:0; perspective:1000px; background:transparent; text-align:left; outline:none; }
+    .card-inner { position:absolute; inset:0; transform-style:preserve-3d; transition:transform .42s cubic-bezier(.2,.72,.22,1); border-radius:inherit; }
+    .card.open .card-inner,.card.matched .card-inner { transform:rotateY(180deg); }
+    .face { position:absolute; inset:0; backface-visibility:hidden; border-radius:inherit; overflow:hidden; display:flex; flex-direction:column; border:1px solid rgba(255,255,255,.42); box-shadow:0 5px 14px rgba(52,44,36,.12); }
+    .front { align-items:center; justify-content:center; color:#fff; padding:8px; }
+    .domain-card .front { background:linear-gradient(145deg,rgba(255,255,255,.1),transparent 45%),linear-gradient(135deg,var(--red),var(--red-dark)); }
+    .action-card .front { background:linear-gradient(145deg,rgba(255,255,255,.1),transparent 45%),linear-gradient(135deg,var(--green),var(--green-dark)); }
+    .card-number { font-size:clamp(2.5rem,4.4vw,4.7rem); line-height:1; font-weight:950; letter-spacing:-.05em; text-shadow:0 4px 14px rgba(0,0,0,.16); }
+    .domain-card .card-number { font-size:clamp(2.8rem,5vw,5.2rem); }
+
+    .back { transform:rotateY(180deg); padding:8px 9px; background:var(--paper); border-color:var(--border); overflow:hidden; justify-content:center; }
+    .domain-card .back { background:linear-gradient(180deg,var(--red-soft),#fffdfa); }
+    .action-card .back { background:linear-gradient(180deg,var(--green-soft),#fffdfa); }
+    .back .tag { display:inline-flex; align-self:flex-start; border-radius:999px; padding:2px 6px; font-size:clamp(.52rem,.62vw,.66rem); font-weight:900; margin-bottom:4px; }
+    .domain-card .tag { background:#ecd0cf; color:var(--red-dark); }
+    .formation-tag { display:none; align-self:flex-start; margin:0 0 4px; padding:2px 6px; border-radius:999px; background:var(--green-dark); color:#fff; font-size:clamp(.52rem,.62vw,.66rem); font-weight:900; }
+    .action-card.matched .formation-tag, body.reveal-mode .action-card .formation-tag { display:inline-flex; }
+    .back h3 { margin:0 0 3px; line-height:1.2; font-size:clamp(.68rem,.86vw,.88rem); }
+    .domain-card .back h3 { font-size:clamp(.76rem,1.05vw,1rem); }
+    .back p { margin:0; color:#514942; line-height:1.25; font-size:clamp(.56rem,.72vw,.74rem); }
+    .domain-card .back p { font-size:clamp(.58rem,.75vw,.76rem); }
+    .verse { margin-top:4px !important; font-size:clamp(.52rem,.64vw,.66rem) !important; color:var(--muted)!important; font-weight:800; }
+
+    .selected .face { box-shadow:0 0 0 3px rgba(199,155,76,.62),0 9px 18px rgba(52,44,36,.18); }
+    .matched .face { box-shadow:0 0 0 2px rgba(75,126,94,.45),0 8px 18px rgba(52,44,36,.14); }
+    .matched::after { content:"✓"; position:absolute; z-index:7; top:6px; right:6px; width:21px; height:21px; display:grid; place-items:center; background:var(--green-dark); color:#fff; border-radius:50%; font-size:.7rem; font-weight:950; box-shadow:0 3px 8px rgba(0,0,0,.12); pointer-events:none; }
+    .wrong { animation:wrongFlash .52s ease 2; }
+    @keyframes wrongFlash { 0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)} }
+    .wrong .face { box-shadow:0 0 0 3px rgba(166,61,64,.56),0 9px 20px rgba(166,61,64,.18); }
+
+    .status { position:fixed; left:50%; bottom:12px; transform:translate(-50%,18px); background:#2e2925; color:#fff; padding:8px 13px; border-radius:999px; font-weight:800; font-size:.78rem; opacity:0; pointer-events:none; transition:.2s ease; z-index:30; box-shadow:0 8px 22px rgba(0,0,0,.2); max-width:calc(100% - 28px); text-align:center; }
+    .status.show { opacity:1; transform:translate(-50%,0); } .status.good{background:var(--green-dark)} .status.bad{background:var(--red-dark)}
+    .completion { display:none; position:fixed; inset:auto 50% 12px auto; transform:translateX(50%); z-index:40; max-width:min(680px,calc(100% - 28px)); padding:10px 16px; border-radius:16px; text-align:center; background:#f2ead7; border:1px solid #dec993; box-shadow:var(--shadow); font-weight:850; font-size:.8rem; line-height:1.4; }
+    .completion.show { display:block; }
+
+    @media (max-width:900px) {
+      .app { padding:8px; gap:6px; }
+      .hero { min-height:54px; padding:8px 11px; border-radius:14px; }
+      .scorebox { min-width:88px; padding-left:10px; }
+      .score-number { font-size:1.35rem; }
+      .game-board { grid-template-columns:minmax(190px,.8fr) minmax(0,2.2fr); gap:6px; }
+      .panel { padding:7px; border-radius:14px; }
+      .panel-title { margin-bottom:5px; }
+      .action-grid,.domain-grid { gap:5px; }
+      .card { border-radius:10px; }
+      .back { padding:5px 6px; }
+    }
+    @media (max-width:680px) {
+      .eyebrow,.panel-title span,.instructions { display:none; }
+      h1 { font-size:1rem; }
+      .toolbar { justify-content:flex-end; min-height:31px; }
+      .btn { padding:5px 8px; font-size:.66rem; }
+      .game-board { grid-template-columns:31% 69%; }
+      .panel-title h2 { font-size:.72rem; }
+      .action-grid { gap:4px; }
+      .domain-grid { grid-template-columns:1fr; grid-template-rows:repeat(4,minmax(0,1fr)); gap:4px; }
+      .back h3 { font-size:clamp(.48rem,1.7vw,.64rem); }
+      .back p { font-size:clamp(.42rem,1.4vw,.56rem); line-height:1.12; }
+      .verse,.formation-tag,.back .tag { font-size:.42rem !important; }
+    }
+    @media (max-height:700px) {
+      .app { padding:7px 9px; gap:5px; }
+      .hero { min-height:48px; padding:6px 12px; border-radius:14px; }
+      .eyebrow { display:none; }
+      .score-number { font-size:1.3rem; }
+      .score-label { font-size:.62rem; }
+      .toolbar { min-height:30px; }
+      .btn { padding:5px 9px; }
+      .panel { padding:7px; }
+      .panel-title { margin-bottom:5px; }
+      .action-grid,.domain-grid { gap:5px; }
+      .back { padding:5px 6px; }
+    }
+    @media (prefers-reduced-motion:reduce) { .card-inner,.status{transition:none!important} }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">ROMANS · LIFE FORMATION</div>
+        <h1>《羅馬書》生命形成連連看</h1>
+      </div>
+      <div class="scorebox">
+        <div class="score-number"><span id="matchedCount">0</span>/20</div>
+        <div class="score-label">已解鎖行動操練</div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="instructions" id="instructionText">請先選擇一張紅色領域卡。</div>
+      <div class="actions">
+        <button class="btn" id="closeAllBtn">全部關上</button>
+        <button class="btn primary" id="openAllBtn">全部打開</button>
+        <button class="btn danger" id="resetBtn">重新開始</button>
+      </div>
+    </div>
+
+    <section class="game-board">
+      <div class="panel">
+        <div class="panel-title">
+          <h2>🔴 領域卡</h2>
+          <span>先選領域</span>
+        </div>
+        <div class="domain-grid" id="domainGrid"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">
+          <h2>🟢 行動操練卡</h2>
+          <span>再找出屬於該領域的 5 張牌</span>
+        </div>
+        <div class="action-grid" id="actionGrid"></div>
+      </div>
+    </section>
+
+    <div class="completion" id="completionBox">🎉 全部 20 張行動操練卡都已成功配對！可以一起回顧：這四個形成面向，今天最需要被操練的是哪一個？</div>
+  </main>
+
+  <div class="status" id="statusToast"></div>
+
+  <script>
+    const domains = [
+      { id: 'identity', title: '身分形成', range: '羅馬書 1～8章', concept: '稱義、恩典、脫離罪的轄制、在聖靈裡的新生命與神兒女的身分。' },
+      { id: 'community', title: '群體形成', range: '羅馬書 12:1～8', concept: '獻上活祭、心意更新、在基督裡成為一個身體、發掘並運用屬靈恩賜。' },
+      { id: 'calling', title: '呼召形成', range: '羅馬書 12:9～13:14', concept: '實踐真實的愛、與哀哭者同哭、順服權柄、愛鄰如己、披戴基督。' },
+      { id: 'mission', title: '使命形成', range: '羅馬書 15～16章', concept: '擔代軟弱者、傳遞盼望、支持普世宣教、同工團隊的建立與彼此問安。' }
+    ];
+
+    const actions = [
+      { domain:'identity', title:'拒絕自我控告', text:'自責時，宣告在基督裡不被定罪。', verse:'羅 8:1' },
+      { domain:'identity', title:'呼叫阿爸父', text:'焦慮時呼叫「阿爸，父」，確認兒女身分。', verse:'羅 8:15' },
+      { domain:'identity', title:'心思的轉向', text:'每天默想經文，操練體貼聖靈。', verse:'羅 8:5-6' },
+      { domain:'identity', title:'獻上主權', text:'早晨禱告，把身體與時間獻給神。', verse:'羅 6:13' },
+      { domain:'identity', title:'坦然承認軟弱', text:'向同伴坦承軟弱，一起仰望恩典。', verse:'羅 3:23-24' },
+
+      { domain:'community', title:'過濾世俗價值觀', text:'每週數位斷捨離，用屬靈閱讀更新心思。', verse:'羅 12:2' },
+      { domain:'community', title:'看別人比自己強', text:'不高看自己，主動肯定同工的恩賜。', verse:'羅 12:3' },
+      { domain:'community', title:'全心投入恩賜', text:'找出一項恩賜，實際投入服事。', verse:'羅 12:6-8' },
+      { domain:'community', title:'甘心樂意的給予', text:'幫助有需要的人，甘心給予、不求回報。', verse:'羅 12:8' },
+      { domain:'community', title:'生活即敬拜', text:'把日常工作獻給神，讓生活成為敬拜。', verse:'羅 12:1' },
+
+      { domain:'calling', title:'與哀哭的人同哭', text:'陪伴受苦者，先聆聽、不急著給建議。', verse:'羅 12:15' },
+      { domain:'calling', title:'為逼迫你的人祝福', text:'被不合理對待時，選擇祝福、不報復。', verse:'羅 12:14' },
+      { domain:'calling', title:'跨越同溫層的愛', text:'主動接近較少互動的人，邀請一起交流。', verse:'羅 12:16' },
+      { domain:'calling', title:'盡公民的本分', text:'誠實納稅、守規則，盡公民本分。', verse:'羅 13:1, 6-7' },
+      { domain:'calling', title:'披戴基督的節制', text:'節制熬夜、消費與不良嗜好。', verse:'羅 13:14' },
+
+      { domain:'mission', title:'體恤初信與年長者', text:'安排聚會時，優先體恤初信者與年長者。', verse:'羅 15:1-2' },
+      { domain:'mission', title:'傳遞盼望的使者', text:'每週傳一則祝福與盼望給未信主朋友。', verse:'羅 15:13' },
+      { domain:'mission', title:'支持跨文化宣教', text:'用奉獻或短宣，支持福音未及之處。', verse:'羅 15:20' },
+      { domain:'mission', title:'開放家庭的款待', text:'開放家庭，提供小組或查經聚會。', verse:'羅 16:3-5' },
+      { domain:'mission', title:'刻意且真誠的問候', text:'聚會後主動問候三位不熟悉的會友。', verse:'羅 16:16' }
+    ];
+
+    let selectedDomain = null;
+    let matched = new Set();
+    let revealAll = false;
+    let busy = false;
+
+    const domainGrid = document.getElementById('domainGrid');
+    const actionGrid = document.getElementById('actionGrid');
+    const matchedCount = document.getElementById('matchedCount');
+    const instructionText = document.getElementById('instructionText');
+    const statusToast = document.getElementById('statusToast');
+    const completionBox = document.getElementById('completionBox');
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
+    }
+
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function renderDomains() {
+      domainGrid.innerHTML = '';
+      domains.forEach((d, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'card domain-card';
+        btn.dataset.domain = d.id;
+        btn.setAttribute('aria-label', `領域卡 ${d.title}`);
+        btn.innerHTML = `
+          <div class="card-inner">
+            <div class="face front">
+              <div class="card-number">${String(index + 1).padStart(2,'0')}</div>
+            </div>
+            <div class="face back">
+              <span class="tag">${escapeHtml(d.range)}</span>
+              <h3>${escapeHtml(d.title)}</h3>
+              <p>${escapeHtml(d.concept)}</p>
+            </div>
+          </div>`;
+        btn.addEventListener('click', () => selectDomain(d.id));
+        domainGrid.appendChild(btn);
+      });
+    }
+
+    function renderActions() {
+      actionGrid.innerHTML = '';
+      shuffle(actions).forEach((a, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'card action-card';
+        btn.dataset.domain = a.domain;
+        btn.dataset.key = `${a.domain}-${a.title}`;
+        btn.setAttribute('aria-label', `行動操練卡 ${index + 1}`);
+        btn.innerHTML = `
+          <div class="card-inner">
+            <div class="face front">
+              <div class="card-number">${String(index + 1).padStart(2,'0')}</div>
+            </div>
+            <div class="face back">
+              <span class="formation-tag">${escapeHtml(domains.find(d => d.id === a.domain).title)}</span>
+              <h3>【${escapeHtml(a.title)}】</h3>
+              <p>${escapeHtml(a.text)}</p>
+              <p class="verse">${escapeHtml(a.verse)}</p>
+            </div>
+          </div>`;
+        btn.addEventListener('click', () => chooseAction(btn, a));
+        actionGrid.appendChild(btn);
+      });
+    }
+
+    function selectDomain(id) {
+      if (busy) return;
+      selectedDomain = id;
+      document.querySelectorAll('.domain-card').forEach(card => {
+        const isSelected = card.dataset.domain === id;
+        card.classList.toggle('open', isSelected || revealAll);
+        card.classList.toggle('selected', isSelected);
+      });
+      const d = domains.find(x => x.id === id);
+      instructionText.textContent = `已選擇「${d.title}」：請從綠牌中找出屬於這個領域的行動操練。`;
+      showToast(`已選擇：${d.title}`, 'good');
+    }
+
+    function chooseAction(card, action) {
+      if (busy || matched.has(card.dataset.key)) return;
+      if (!selectedDomain) {
+        showToast('請先選一張紅色領域卡。', 'bad');
+        return;
+      }
+
+      card.classList.add('open');
+
+      if (action.domain === selectedDomain) {
+        matched.add(card.dataset.key);
+        card.classList.add('matched');
+        card.classList.remove('open');
+        updateProgress();
+        const d = domains.find(x => x.id === selectedDomain);
+        showToast(`配對成功！這張屬於「${d.title}」。`, 'good');
+      } else {
+        busy = true;
+        card.classList.add('wrong');
+        const selectedCard = document.querySelector(`.domain-card[data-domain="${selectedDomain}"]`);
+        selectedCard?.classList.add('wrong');
+        showToast('配對不正確，再想想看。', 'bad');
+        setTimeout(() => {
+          card.classList.remove('open', 'wrong');
+          selectedCard?.classList.remove('wrong');
+          if (!revealAll) {
+            selectedCard?.classList.remove('open');
+            selectedCard?.classList.remove('selected');
+            selectedDomain = null;
+            instructionText.textContent = '配對失敗，請重新選擇一張紅色領域卡。';
+          }
+          busy = false;
+        }, 1150);
+      }
+    }
+
+    function updateProgress() {
+      matchedCount.textContent = matched.size;
+      completionBox.classList.toggle('show', matched.size === actions.length);
+      if (matched.size === actions.length) {
+        instructionText.textContent = '全部完成！可以使用「全部打開」一起回顧四個形成面向。';
+      }
+    }
+
+    function closeAll() {
+      document.body.classList.remove('reveal-mode');
+      revealAll = false;
+      selectedDomain = null;
+      document.querySelectorAll('.domain-card').forEach(card => card.classList.remove('open','selected','wrong'));
+      document.querySelectorAll('.action-card').forEach(card => {
+        card.classList.remove('wrong');
+        if (!matched.has(card.dataset.key)) card.classList.remove('open');
+      });
+      instructionText.textContent = '未配對的牌已蓋上；已解鎖的綠牌會保持開啟。請重新選擇紅色領域卡。';
+      showToast('已關上所有未解鎖牌。');
+    }
+
+    function openAll() {
+      document.body.classList.add('reveal-mode');
+      revealAll = true;
+      selectedDomain = null;
+      document.querySelectorAll('.card').forEach(card => card.classList.add('open'));
+      document.querySelectorAll('.domain-card').forEach(card => card.classList.remove('selected'));
+      instructionText.textContent = '目前為答案檢視模式：所有牌都已打開。點「全部關上」即可繼續遊戲。';
+      showToast('已打開全部答案。', 'good');
+    }
+
+    function resetGame() {
+      document.body.classList.remove('reveal-mode');
+      selectedDomain = null;
+      matched = new Set();
+      revealAll = false;
+      busy = false;
+      renderDomains();
+      renderActions();
+      updateProgress();
+      instructionText.textContent = '遊戲已重新開始，綠牌也已重新洗牌。請先選擇一張紅色領域卡。';
+      showToast('已重新開始並洗牌。');
+    }
+
+    let toastTimer;
+    function showToast(message, type = '') {
+      clearTimeout(toastTimer);
+      statusToast.textContent = message;
+      statusToast.className = `status show ${type}`;
+      toastTimer = setTimeout(() => statusToast.className = 'status', 1800);
+    }
+
+    document.getElementById('closeAllBtn').addEventListener('click', closeAll);
+    document.getElementById('openAllBtn').addEventListener('click', openAll);
+    document.getElementById('resetBtn').addEventListener('click', resetGame);
+
+    renderDomains();
+    renderActions();
+  </script>
+</body>
+</html>
