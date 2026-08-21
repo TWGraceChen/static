@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hans">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>羅馬書｜生命形成連連看</title>
+  <title>罗马书｜生命形成连连看</title>
   <style>
     :root {
       --bg: #f5f1e8; --paper: #fffdf8; --ink: #2f2a25; --muted: #72685e;
@@ -15,7 +15,7 @@
     * { box-sizing: border-box; }
     html, body { width:100%; height:100%; margin:0; overflow:hidden; }
     body {
-      font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+      font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
       color:var(--ink);
       background:radial-gradient(circle at top left,rgba(199,155,76,.10),transparent 28%),linear-gradient(180deg,#f7f3eb 0%,#eee8de 100%);
     }
@@ -132,78 +132,78 @@
     <section class="hero">
       <div>
         <div class="eyebrow">ROMANS · LIFE FORMATION</div>
-        <h1>《羅馬書》生命形成連連看</h1>
+        <h1>《罗马书》生命形成连连看</h1>
       </div>
       <div class="scorebox">
         <div class="score-number"><span id="matchedCount">0</span>/20</div>
-        <div class="score-label">已解鎖行動操練</div>
+        <div class="score-label">已解锁行动操练</div>
       </div>
     </section>
 
     <div class="toolbar">
-      <div class="instructions" id="instructionText">請先選擇一張紅色領域卡。</div>
+      <div class="instructions" id="instructionText">请选择一张红色领域卡。</div>
       <div class="actions">
-        <button class="btn" id="closeAllBtn">全部關上</button>
-        <button class="btn primary" id="openAllBtn">全部打開</button>
-        <button class="btn danger" id="resetBtn">重新開始</button>
+        <button class="btn" id="closeAllBtn">全部关上</button>
+        <button class="btn primary" id="openAllBtn">全部打开</button>
+        <button class="btn danger" id="resetBtn">重新开始</button>
       </div>
     </div>
 
     <section class="game-board">
       <div class="panel">
         <div class="panel-title">
-          <h2>🔴 領域卡</h2>
-          <span>先選領域</span>
+          <h2>🔴 领域卡</h2>
+          <span>先选领域</span>
         </div>
         <div class="domain-grid" id="domainGrid"></div>
       </div>
 
       <div class="panel">
         <div class="panel-title">
-          <h2>🟢 行動操練卡</h2>
-          <span>再找出屬於該領域的 5 張牌</span>
+          <h2>🟢 行动操练卡</h2>
+          <span>再找出属于该领域的 5 张牌</span>
         </div>
         <div class="action-grid" id="actionGrid"></div>
       </div>
     </section>
 
-    <div class="completion" id="completionBox">🎉 全部 20 張行動操練卡都已成功配對！可以一起回顧：這四個形成面向，今天最需要被操練的是哪一個？</div>
+    <div class="completion" id="completionBox">🎉 全部 20 张行动操练卡都已成功配对！可以一起回顾：这四个形成面向，今天最需要被操练的是哪一个？</div>
   </main>
 
   <div class="status" id="statusToast"></div>
 
   <script>
     const domains = [
-      { id: 'identity', title: '身分形成', range: '羅馬書 1～8章', concept: '稱義、恩典、脫離罪的轄制、在聖靈裡的新生命與神兒女的身分。' },
-      { id: 'community', title: '群體形成', range: '羅馬書 12:1～8', concept: '獻上活祭、心意更新、在基督裡成為一個身體、發掘並運用屬靈恩賜。' },
-      { id: 'calling', title: '呼召形成', range: '羅馬書 12:9～13:14', concept: '實踐真實的愛、與哀哭者同哭、順服權柄、愛鄰如己、披戴基督。' },
-      { id: 'mission', title: '使命形成', range: '羅馬書 15～16章', concept: '擔代軟弱者、傳遞盼望、支持普世宣教、同工團隊的建立與彼此問安。' }
+      { id: 'identity', title: '身份形成', range: '罗马书 1～8章', concept: '称义、恩典、脱离罪的辖制、在圣灵里的新生命与神儿女的身份。' },
+      { id: 'community', title: '群体形成', range: '罗马书 12:1～8', concept: '献上活祭、心意更新、在基督里成为一个身体、发掘并运用属灵恩赐。' },
+      { id: 'calling', title: '呼召形成', range: '罗马书 12:9～13:14', concept: '实践真实的爱、与哀哭者同哭、顺服权柄、爱邻如己、披戴基督。' },
+      { id: 'mission', title: '使命形成', range: '罗马书 15～16章', concept: '担代软弱者、传递盼望、支持普世宣教、同工团队的建立与彼此问安。' }
     ];
 
     const actions = [
-      { domain:'identity', title:'拒絕自我控告', text:'自責時，宣告在基督裡不被定罪。', verse:'羅 8:1' },
-      { domain:'identity', title:'呼叫阿爸父', text:'焦慮時呼叫「阿爸，父」，確認兒女身分。', verse:'羅 8:15' },
-      { domain:'identity', title:'心思的轉向', text:'每天默想經文，操練體貼聖靈。', verse:'羅 8:5-6' },
-      { domain:'identity', title:'獻上主權', text:'早晨禱告，把身體與時間獻給神。', verse:'羅 6:13' },
-      { domain:'identity', title:'坦然承認軟弱', text:'向同伴坦承軟弱，一起仰望恩典。', verse:'羅 3:23-24' },
+      { domain:'identity', title:'拒绝自我控告', text:'自责时，宣告在基督里不被定罪。', verse:'罗 8:1' },
+      { domain:'identity', title:'呼叫阿爸父', text:'焦虑时呼叫“阿爸，父”，确认儿女身份。', verse:'罗 8:15' },
+      { domain:'identity', title:'心思的转向', text:'每天默想经文，操练体贴圣灵。', verse:'罗 8:5-6' },
+      { domain:'identity', title:'献上主权', text:'早晨祷告，把身体与时间献给神。', verse:'罗 6:13' },
+      { domain:'identity', title:'坦然承认软弱', text:'向同伴坦承软弱，一起仰望恩典。', verse:'罗 3:23-24' },
 
-      { domain:'community', title:'過濾世俗價值觀', text:'每週數位斷捨離，用屬靈閱讀更新心思。', verse:'羅 12:2' },
-      { domain:'community', title:'看別人比自己強', text:'不高看自己，主動肯定同工的恩賜。', verse:'羅 12:3' },
-      { domain:'community', title:'全心投入恩賜', text:'找出一項恩賜，實際投入服事。', verse:'羅 12:6-8' },
-      { domain:'community', title:'甘心樂意的給予', text:'幫助有需要的人，甘心給予、不求回報。', verse:'羅 12:8' },
-      { domain:'community', title:'生活即敬拜', text:'把日常工作獻給神，讓生活成為敬拜。', verse:'羅 12:1' },
+      { domain:'community', title:'过滤世俗价值观', text:'每周数字断舍离，用属灵阅读更新心思。', verse:'罗 12:2' },
+      { domain:'community', title:'看别人比自己强', text:'不高看自己，主动肯定同工的恩赐。', verse:'罗 12:3' },
+      { domain:'community', title:'全心投入恩赐', text:'找出一项恩赐，实际投入服事。', verse:'罗 12:6-8' },
+      { domain:'community', title:'甘心乐意地给予', text:'帮助有需要的人，甘心给予、不求回报。', verse:'罗 12:8' },
+      { domain:'community', title:'生活即敬拜', text:'把日常工作献给神，让生活成为敬拜。', verse:'罗 12:1' },
 
-      { domain:'calling', title:'與哀哭的人同哭', text:'陪伴受苦者，先聆聽、不急著給建議。', verse:'羅 12:15' },
-      { domain:'calling', title:'為逼迫你的人祝福', text:'被不合理對待時，選擇祝福、不報復。', verse:'羅 12:14' },
-      { domain:'calling', title:'跨越同溫層的愛', text:'主動接近較少互動的人，邀請一起交流。', verse:'羅 12:16' },
-      { domain:'calling', title:'盡公民的本分', text:'誠實納稅、守規則，盡公民本分。', verse:'羅 13:1, 6-7' },
-      { domain:'calling', title:'披戴基督的節制', text:'節制熬夜、消費與不良嗜好。', verse:'羅 13:14' },
+      { domain:'calling', title:'与哀哭的人同哭', text:'陪伴受苦者，先聆听，不急着给建议。', verse:'罗 12:15' },
+      { domain:'calling', title:'为逼迫你的人祝福', text:'被不合理对待时，选择祝福，不报复。', verse:'罗 12:14' },
+      { domain:'calling', title:'跨越同温层的爱', text:'主动接近较少互动的人，邀请一起交流。', verse:'罗 12:16' },
+      { domain:'calling', title:'尽公民的本分', text:'诚实纳税、守规则，尽公民本分。', verse:'罗 13:1, 6-7' },
+      { domain:'calling', title:'披戴基督的节制', text:'节制熬夜、消费与不良嗜好。', verse:'罗 13:14' },
 
-      { domain:'mission', title:'體恤初信與年長者', text:'安排聚會時，優先體恤初信者與年長者。', verse:'羅 15:1-2' },
-      { domain:'mission', title:'傳遞盼望的使者', text:'每週傳一則祝福與盼望給未信主朋友。', verse:'羅 15:13' },
-      { domain:'mission', title:'支持跨文化宣教', text:'用奉獻或短宣，支持福音未及之處。', verse:'羅 15:20' },
-      { domain:'mission', title:'開放家庭的款待', text:'開放家庭，提供小組或查經聚會。', verse:'羅 16:3-5' },
-      { domain:'mission', title:'刻意且真誠的問候', text:'聚會後主動問候三位不熟悉的會友。', verse:'羅 16:16' }
+      { domain:'mission', title:'体恤初信与年长者', text:'安排聚会时，优先体恤初信者与年长者。', verse:'罗 15:1-2' },
+      { domain:'mission', title:'传递盼望的使者', text:'每周传一则祝福与盼望给未信主朋友。', verse:'罗 15:13' },
+      { domain:'mission', title:'支持跨文化宣教', text:'用奉献或短宣，支持福音未及之处。', verse:'罗 15:20' },
+      { domain:'mission', title:'开放家庭的款待', text:'开放家庭，提供小组或查经聚会。', verse:'罗 16:3-5' },
+      { domain:'mission', title:'刻意且真诚的问候', text:'聚会后主动问候三位不熟悉的会友。', verse:'罗 16:16' }
     ];
 
     let selectedDomain = null;
@@ -237,7 +237,7 @@
         const btn = document.createElement('button');
         btn.className = 'card domain-card';
         btn.dataset.domain = d.id;
-        btn.setAttribute('aria-label', `領域卡 ${d.title}`);
+        btn.setAttribute('aria-label', `领域卡 ${d.title}`);
         btn.innerHTML = `
           <div class="card-inner">
             <div class="face front">
@@ -261,7 +261,7 @@
         btn.className = 'card action-card';
         btn.dataset.domain = a.domain;
         btn.dataset.key = `${a.domain}-${a.title}`;
-        btn.setAttribute('aria-label', `行動操練卡 ${index + 1}`);
+        btn.setAttribute('aria-label', `行动操练卡 ${index + 1}`);
         btn.innerHTML = `
           <div class="card-inner">
             <div class="face front">
@@ -288,14 +288,14 @@
         card.classList.toggle('selected', isSelected);
       });
       const d = domains.find(x => x.id === id);
-      instructionText.textContent = `已選擇「${d.title}」：請從綠牌中找出屬於這個領域的行動操練。`;
-      showToast(`已選擇：${d.title}`, 'good');
+      instructionText.textContent = `已选择“${d.title}”：请从绿牌中找出属于这个领域的行动操练。`;
+      showToast(`已选择：${d.title}`, 'good');
     }
 
     function chooseAction(card, action) {
       if (busy || matched.has(card.dataset.key)) return;
       if (!selectedDomain) {
-        showToast('請先選一張紅色領域卡。', 'bad');
+        showToast('请先选一张红色领域卡。', 'bad');
         return;
       }
 
@@ -307,13 +307,13 @@
         card.classList.remove('open');
         updateProgress();
         const d = domains.find(x => x.id === selectedDomain);
-        showToast(`配對成功！這張屬於「${d.title}」。`, 'good');
+        showToast(`配对成功！这张属于“${d.title}”。`, 'good');
       } else {
         busy = true;
         card.classList.add('wrong');
         const selectedCard = document.querySelector(`.domain-card[data-domain="${selectedDomain}"]`);
         selectedCard?.classList.add('wrong');
-        showToast('配對不正確，再想想看。', 'bad');
+        showToast('配对不正确，再想想看。', 'bad');
         setTimeout(() => {
           card.classList.remove('open', 'wrong');
           selectedCard?.classList.remove('wrong');
@@ -321,7 +321,7 @@
             selectedCard?.classList.remove('open');
             selectedCard?.classList.remove('selected');
             selectedDomain = null;
-            instructionText.textContent = '配對失敗，請重新選擇一張紅色領域卡。';
+            instructionText.textContent = '配对失败，请重新选择一张红色领域卡。';
           }
           busy = false;
         }, 1150);
@@ -332,7 +332,7 @@
       matchedCount.textContent = matched.size;
       completionBox.classList.toggle('show', matched.size === actions.length);
       if (matched.size === actions.length) {
-        instructionText.textContent = '全部完成！可以使用「全部打開」一起回顧四個形成面向。';
+        instructionText.textContent = '全部完成！可以使用“全部打开”一起回顾四个形成面向。';
       }
     }
 
@@ -345,8 +345,8 @@
         card.classList.remove('wrong');
         if (!matched.has(card.dataset.key)) card.classList.remove('open');
       });
-      instructionText.textContent = '未配對的牌已蓋上；已解鎖的綠牌會保持開啟。請重新選擇紅色領域卡。';
-      showToast('已關上所有未解鎖牌。');
+      instructionText.textContent = '未配对的牌已盖上；已解锁的绿牌会保持开启。请选择红色领域卡。';
+      showToast('已关上所有未解锁牌。');
     }
 
     function openAll() {
@@ -355,8 +355,8 @@
       selectedDomain = null;
       document.querySelectorAll('.card').forEach(card => card.classList.add('open'));
       document.querySelectorAll('.domain-card').forEach(card => card.classList.remove('selected'));
-      instructionText.textContent = '目前為全部檢視模式：綠牌僅顯示行動內容，不顯示所屬形成。點「全部關上」即可繼續遊戲。';
-      showToast('已打開全部卡牌內容。', 'good');
+      instructionText.textContent = '当前为全部查看模式：绿牌仅显示行动内容，不显示所属形成。点“全部关上”即可继续游戏。';
+      showToast('已打开全部卡牌内容。', 'good');
     }
 
     function resetGame() {
@@ -368,8 +368,8 @@
       renderDomains();
       renderActions();
       updateProgress();
-      instructionText.textContent = '遊戲已重新開始，綠牌也已重新洗牌。請先選擇一張紅色領域卡。';
-      showToast('已重新開始並洗牌。');
+      instructionText.textContent = '游戏已重新开始，绿牌也已重新洗牌。请选择一张红色领域卡。';
+      showToast('已重新开始并洗牌。');
     }
 
     let toastTimer;
