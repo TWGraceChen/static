@@ -67,7 +67,7 @@
     .back .tag { display:inline-flex; align-self:flex-start; border-radius:999px; padding:2px 6px; font-size:clamp(.52rem,.62vw,.66rem); font-weight:900; margin-bottom:4px; }
     .domain-card .tag { background:#ecd0cf; color:var(--red-dark); }
     .formation-tag { display:none; align-self:flex-start; margin:0 0 4px; padding:2px 6px; border-radius:999px; background:var(--green-dark); color:#fff; font-size:clamp(.52rem,.62vw,.66rem); font-weight:900; }
-    .action-card.matched .formation-tag, body.reveal-mode .action-card .formation-tag { display:inline-flex; }
+    .action-card.matched .formation-tag { display:inline-flex; }
     .back h3 { margin:0 0 3px; line-height:1.2; font-size:clamp(.68rem,.86vw,.88rem); }
     .domain-card .back h3 { font-size:clamp(.76rem,1.05vw,1rem); }
     .back p { margin:0; color:#514942; line-height:1.25; font-size:clamp(.56rem,.72vw,.74rem); }
@@ -355,8 +355,8 @@
       selectedDomain = null;
       document.querySelectorAll('.card').forEach(card => card.classList.add('open'));
       document.querySelectorAll('.domain-card').forEach(card => card.classList.remove('selected'));
-      instructionText.textContent = '目前為答案檢視模式：所有牌都已打開。點「全部關上」即可繼續遊戲。';
-      showToast('已打開全部答案。', 'good');
+      instructionText.textContent = '目前為全部檢視模式：綠牌僅顯示行動內容，不顯示所屬形成。點「全部關上」即可繼續遊戲。';
+      showToast('已打開全部卡牌內容。', 'good');
     }
 
     function resetGame() {
